@@ -105,3 +105,13 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+
+# idea
+*.xml
+*.idea
+.idea/RedditBot.iml
+.idea/dictionaries/
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
