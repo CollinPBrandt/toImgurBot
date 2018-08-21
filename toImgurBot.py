@@ -11,13 +11,18 @@ import imgurConfig
 
 def main():
     print('\nRunning toImgurBot...\n')
-    runBot()
-
-
-def runBot():
     reddit = redditLogin()
     client = imgurLogin()
+    checkCommentsForCall(reddit, client)
 
+
+def checkCommentsForCall(reddit, client):
+    """
+    :param client:  imgur login instance, used to interact with imgur api
+    :param reddit: reddit login instance, used to interact with PRAW api
+    :return: none, scrapes comments on /r/pics until it finds one with "!toImgur". Then checks if post has already been seen by bot,
+    if post is self post, or if post is already hosted by imgur. If none of these, creates new host on imgur.
+    """
     print('Searching Comments for !toImgur...\n')
     botCall = '!toImgur'
     for comment in reddit.subreddit('pics').stream.comments():
@@ -56,10 +61,14 @@ def imgurLogin():
 
 
 def postSubmissionToImgur(client, submission):
+    """
+    :param client:  imgur login instance, used to interact with imgur api
+    :param submission: submission to be rehosted, includes necessary submission information
+    :return: none, writes submission url to .txt, and posts image to imgur
+    """
     with open('redditURLs.txt', 'a') as f:
         f.write('\n' + submission.url)
         f.close()
-
     print('Posting submission to Imgur')
     album = None
     submissionConfig = {
@@ -73,6 +82,11 @@ def postSubmissionToImgur(client, submission):
 
 
 def returnLinkToCallComment(client, comment):
+    """
+    :param client:  imgur login instance, used to interact with imgur api
+    :param comment: original reddit comment that called bot
+    :return: none, replies to reddit comment with imgur link
+    """
     for image in client.get_account_images(imgurConfig.username, page=0):
         print('Replying to comment with imgur URL')
         try:
@@ -84,8 +98,9 @@ def returnLinkToCallComment(client, comment):
             returnLinkToCallComment(client, comment)
 
         print('Reply successful')
-        break  # stop after returning first(most recent) image
+        break  # stop after returning first(most recent) image, only way to get url using imgur api
 
 
 if __name__ == '__main__':
-    main()
+    while True:
+        main()
