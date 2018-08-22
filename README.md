@@ -3,7 +3,7 @@
 A reddit bot that logs in to Reddit and Imgur.
 It continually scrapes new comments in the subreddit chose (/r/pics) for a reference call "!toImgur".
 When this call is seen, it takes the parent submission from this comment and rehosts the image to Imgur.com.
-It will then return a link to the newly hosted image back to the commenter
+It will then return a link to the newly hosted image back to the commenter.
 
 ## Getting Started
 
